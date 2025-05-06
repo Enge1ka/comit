@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechNet Solutions - Networking Equipment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+
+        body {
+            background-color: #f1f5f9;
+        }
+
+        header {
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+        position: absolute;
+        top: 0;
+        left: 20px;
+        height: 180px;;
+        z-index: 1000; /* ensures it stays on top */
+        padding-top: none; /* Adjusts the top padding */
+        margin: 0;
+        transform: translateY(-25%);
+        }
+
+        .logo img {
+        height: 100%;
+        width: auto;
+        object-fit: contain;
+        filter: brightness(0) invert(1);
+        }
+
+
+        
+
+        .cart-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--primary);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 1rem;
+            text-align: center;
+        }
+
+        .products {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1rem;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .product-price {
+            color: var(--primary);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+            padding: 2rem;
+            transition: right 0.3s;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-items {
+            margin: 2rem 0;
+            list-style: none;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+          <div class="logo"><img src="./Assets/logo.png" alt="EngiLink Technologies"></div>
+            <button class="cart-btn">
+                🛒 <span class="cart-count">0</span>
+            </button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Premium Networking Solutions</h1>
+        <p>Enterprise-grade routers, switches, and network accessories</p>
+    </section>
+
+    <main class="products">
+        <!-- Product cards will be generated by JS -->
+    </main>
+
+    <div class="cart-sidebar">
+        <h2>Your Cart</h2>
+        <ul class="cart-items"></ul>
+        <div class="cart-total">Total: $0</div>
+        <button class="checkout-btn">Proceed to Checkout</button>
+    </div>
+
+    <script>
+        // Sample products data
+        const products = [
+            { id: 1, name: 'Cisco Catalyst 9200 Switch', price: 1999, image: 'switch.jpg' },
+            { id: 2, name: 'Ubiquiti UniFi Dream Machine', price: 299, image: 'router.jpg' },
+            { id: 3, name: 'TP-Link Omada Access Point', price: 149, image: 'access-point.jpg' },
+            { id: 4, name: 'Cat6 Ethernet Cable (100m)', price: 89, image: 'cable.jpg' },
+            { id: 5, name: 'Rack Mount Cabinet 42U', price: 899, image: 'rack.jpg' },
+            { id: 6, name: 'Network Cable Tester', price: 49, image: 'tester.jpg' },
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartSidebar = document.querySelector('.cart-sidebar');
+        const cartCount = document.querySelector('.cart-count');
+
+        // Render products
+        function renderProducts() {
+            const container = document.querySelector('.products');
+            container.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <img src="${product.image}" class="product-image" alt="${product.name}">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <div class="product-price">$${product.price}</div>
+                        <button class="add-to-cart" data-id="${product.id}">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update cart UI
+        function updateCart() {
+            const itemsContainer = document.querySelector('.cart-items');
+            const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            
+            itemsContainer.innerHTML = cart.map(item => `
+                <li class="cart-item">
+                    <div>
+                        <h4>${item.name}</h4>
+                        <p>$${item.price} x ${item.quantity}</p>
+                    </div>
+                    <button class="remove-item" data-id="${item.id}">✕</button>
+                </li>
+            `).join('');
+
+            document.querySelector('.cart-total').textContent = `Total: $${total}`;
+            cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // Event listeners
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('add-to-cart')) {
+                const productId = parseInt(e.target.dataset.id);
+                const product = products.find(p => p.id === productId);
+                const existingItem = cart.find(item => item.id === productId);
+
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    cart.push({ ...product, quantity: 1 });
+                }
+                
+                updateCart();
+            }
+
+            if (e.target.classList.contains('remove-item')) {
+                const productId = parseInt(e.target.dataset.id);
+                cart = cart.filter(item => item.id !== productId);
+                updateCart();
+            }
+
+            if (e.target.classList.contains('cart-btn')) {
+                cartSidebar.classList.toggle('active');
+            }
+        });
+
+        // Initialize
+        renderProducts();
+        updateCart();
+    </script>
+</body>
+</html>
